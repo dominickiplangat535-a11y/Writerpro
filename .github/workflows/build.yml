@@ -9,6 +9,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+
       - name: Get source code
         uses: actions/checkout@v4
 
@@ -21,11 +22,20 @@ jobs:
             git \
             zip \
             unzip \
+            autoconf \
+            automake \
+            libtool \
+            libtool-bin \
+            libltdl-dev \
+            pkg-config \
+            build-essential \
             openjdk-17-jdk
 
-      - name: Install python-for-android
+      - name: Install Python build dependencies
         run: |
-          pip install python-for-android
+          python3 -m pip install --upgrade pip
+          python3 -m pip install cython
+          python3 -m pip install python-for-android
 
       - name: Build APK
         run: |
@@ -35,6 +45,16 @@ jobs:
             --name="WriterPro" \
             --version=1.0 \
             --bootstrap=sdl2 \
+            --requirements=python3,sdl2 \
+            --arch=arm64-v8a \
+            --orientation=portrait \
+            --android-api=35
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: WriterPro-APK
+          path: "**/*.apk"            --bootstrap=sdl2 \
             --requirements=python3,sdl2 \
             --arch=arm64-v8a \
             --orientation=portrait \
