@@ -41,9 +41,10 @@ jobs:
           echo "ANDROID_NDK_HOME=${ANDROID_HOME}/ndk/25.2.9519653" >> $GITHUB_ENV
           echo "${ANDROID_HOME}/ndk/25.2.9519653" >> $GITHUB_PATH
 
-      - name: Install python-for-android
+           - name: Install python-for-android
         run: |
           python -m pip install --upgrade pip setuptools wheel
+          python -m pip install "Cython==0.29.37"
           python -m pip install "python-for-android==2024.1.21"
 
       - name: Build WriterPro APK
