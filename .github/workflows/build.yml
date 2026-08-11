@@ -55,7 +55,7 @@ jobs:
             --name="WriterPro" \
             --version=1.0 \
             --bootstrap=sdl2 \
-            --requirements=python3,pygame \
+            --requirements=python3,pygame-ce \
             --arch=arm64-v8a \
             --orientation=portrait \
             --android-api=35 \
