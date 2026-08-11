@@ -12,12 +12,12 @@ jobs:
       - name: Get source code
         uses: actions/checkout@v4
 
-      - name: Set up Python 3.11
+      - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
-      - name: Install system dependencies
+      - name: Install build tools
         run: |
           sudo apt-get update
           sudo apt-get install -y \
@@ -31,12 +31,22 @@ jobs:
             build-essential \
             openjdk-17-jdk
 
-      - name: Install Python dependencies
+      - name: Install Android NDK 25.2
+        run: |
+          yes | ${ANDROID_HOME}/cmdline-tools/latest/bin/sdkmanager \
+            "platforms;android-35" \
+            "build-tools;35.0.0" \
+            "ndk;25.2.9519653"
+
+          echo "ANDROID_NDK_HOME=${ANDROID_HOME}/ndk/25.2.9519653" >> $GITHUB_ENV
+          echo "${ANDROID_HOME}/ndk/25.2.9519653" >> $GITHUB_PATH
+
+      - name: Install python-for-android
         run: |
           python -m pip install --upgrade pip setuptools wheel
           python -m pip install "python-for-android==2024.1.21"
 
-      - name: Build APK
+      - name: Build WriterPro APK
         run: |
           python -m pythonforandroid.toolchain apk \
             --private . \
