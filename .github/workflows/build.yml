@@ -12,36 +12,30 @@ jobs:
       - name: Get source code
         uses: actions/checkout@v4
 
-      - name: Install build tools
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y \
-            python3-pip \
-            python3-venv \
-            git \
-            zip \
-            unzip \
-            autoconf \
-            automake \
-            libtool \
-            libtool-bin \
-            libltdl-dev \
-            pkg-config \
-            build-essential \
-            openjdk-17-jdk
-
-      - name: Set up Python
+      - name: Set up Python 3.11
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
-      - name: Install Python build dependencies
+      - name: Install build tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            git \
+            zip \
+            unzip \
+            openjdk-17-jdk \
+            autoconf \
+            automake \
+            libtool \
+            pkg-config
+
+      - name: Install python-for-android
         run: |
           python -m pip install --upgrade pip
-          python -m pip install "cython<3.1"
           python -m pip install python-for-android
 
-      - name: Build APK
+      - name: Build WriterPro APK
         run: |
           python -m pythonforandroid.toolchain apk \
             --private . \
@@ -52,10 +46,12 @@ jobs:
             --requirements=python3,pygame \
             --arch=arm64-v8a \
             --orientation=portrait \
-            --android-api=35
+            --android-api=35 \
+            --debug
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: WriterPro-APK
           path: "**/*.apk"
+          if-no-files-found: error
