@@ -51,6 +51,11 @@ jobs:
           python -m pythonforandroid.toolchain --version
           echo "ANDROID_NDK_HOME=$ANDROID_NDK_HOME"
 
+      - name: Clean python-for-android build
+        run: |
+          rm -rf ~/.local/share/python-for-android/build
+          rm -rf ~/.local/share/python-for-android/dists
+
       - name: Build WriterPro APK
         run: |
           python -m pythonforandroid.toolchain apk \
