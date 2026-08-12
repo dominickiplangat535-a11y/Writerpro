@@ -17,7 +17,7 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Install build tools
+      - name: Install system tools
         run: |
           sudo apt-get update
           sudo apt-get install -y \
@@ -36,15 +36,20 @@ jobs:
           yes | ${ANDROID_HOME}/cmdline-tools/latest/bin/sdkmanager \
             "platforms;android-35" \
             "build-tools;35.0.0" \
-            "ndk;25.2.9519653"
+            "ndk;28.2.13676358"
 
-          echo "ANDROID_NDK_HOME=${ANDROID_HOME}/ndk/25.2.9519653" >> $GITHUB_ENV
+          echo "ANDROID_NDK_HOME=${ANDROID_HOME}/ndk/28.2.13676358" >> $GITHUB_ENV
 
-      - name: Install Python build tools
+      - name: Install python-for-android
         run: |
           python -m pip install --upgrade pip
-          python -m pip install "Cython==0.29.37"
-          python -m pip install "python-for-android==2024.1.21"
+          python -m pip install "python-for-android==2026.5.9"
+
+      - name: Show build versions
+        run: |
+          python --version
+          python -m pythonforandroid.toolchain --version
+          echo "ANDROID_NDK_HOME=$ANDROID_NDK_HOME"
 
       - name: Build WriterPro APK
         run: |
