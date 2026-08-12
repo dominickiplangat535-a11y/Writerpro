@@ -31,7 +31,7 @@ jobs:
             build-essential \
             openjdk-17-jdk
 
-      - name: Install Android NDK 25.2
+      - name: Install Android SDK and NDK
         run: |
           yes | ${ANDROID_HOME}/cmdline-tools/latest/bin/sdkmanager \
             "platforms;android-35" \
@@ -39,11 +39,10 @@ jobs:
             "ndk;25.2.9519653"
 
           echo "ANDROID_NDK_HOME=${ANDROID_HOME}/ndk/25.2.9519653" >> $GITHUB_ENV
-          echo "${ANDROID_HOME}/ndk/25.2.9519653" >> $GITHUB_PATH
 
-      - name: Install python-for-android
+      - name: Install Python build tools
         run: |
-          python -m pip install --upgrade pip setuptools wheel
+          python -m pip install --upgrade pip
           python -m pip install "Cython==0.29.37"
           python -m pip install "python-for-android==2024.1.21"
 
@@ -55,7 +54,7 @@ jobs:
             --name="WriterPro" \
             --version=1.0 \
             --bootstrap=sdl2 \
-            --requirements=python3,pygame-ce \
+            --requirements=python3 \
             --arch=arm64-v8a \
             --orientation=portrait \
             --android-api=35 \
